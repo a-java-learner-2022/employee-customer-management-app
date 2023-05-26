@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.javalearner.employeeapp.dao.EmployeeRepository;
 import com.javalearner.employeeapp.entity.Employee;
@@ -27,8 +26,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
+//	@Autowired
+//	private RestTemplate restTemplate;
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private WebClient webClient;
 	
 	@Value("${addressservice.base.url}")
 	private String addressBaseURL;
@@ -46,7 +48,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 			Employee employee = optional.get();
 			EmployeeResponse employeeResponse = modelMapper.map(employee, EmployeeResponse.class);
 			
-			AddressResponse addressResponse = restTemplate.getForObject(addressBaseURL+"/address/{employeeId}", AddressResponse.class,employeeId);
+			AddressResponse addressResponse = webClient
+											.get()
+											.uri("/address/"+employeeId)
+											.retrieve()
+											.bodyToMono(AddressResponse.class)
+											.block();
+					//restTemplate.getForObject(addressBaseURL+"/address/{employeeId}", AddressResponse.class,employeeId);
 			employeeResponse.setAddressResponse(addressResponse);
 			
 			LOGGER.info(String.format("EMPLOYEE SERVICE: => %s", employeeResponse.toString()));

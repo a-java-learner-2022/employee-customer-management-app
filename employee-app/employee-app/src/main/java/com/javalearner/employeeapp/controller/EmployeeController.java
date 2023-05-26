@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.javalearner.employeeapp.model.EmployeeResponse;
 import com.javalearner.employeeapp.service.EmployeeService;
@@ -17,18 +16,18 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
-	@Autowired
-	private RestTemplate restTemplate;
+//	@Autowired
+//	private RestTemplate restTemplate;
 
-	@GetMapping()
-	public String getEmployee() {
-
-		//return the address data along with employee data
-
-		//get the data from address service by hitting this http://localhost:8080/address
-		String address=restTemplate.getForObject("http://localhost:8080/address",String.class);
-		return "Name: Durga Maharjan, email: durgamaharjan@gmail.com " + address;
-	}
+//	@GetMapping()
+//	public String getEmployee() {
+//
+//		//return the address data along with employee data
+//
+//		//get the data from address service by hitting this http://localhost:8080/address
+//		String address=restTemplate.getForObject("http://localhost:8080/address",String.class);
+//		return "Name: Durga Maharjan, email: durgamaharjan@gmail.com " + address;
+//	}
 
 	@GetMapping("/employees/{employeeId}")
 	public ResponseEntity<EmployeeResponse> findEmployeeById(@PathVariable("employeeId") int employeeId) {

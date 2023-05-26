@@ -21,11 +21,6 @@ public class AddressController {
 	@Autowired
 	private AddressService addressService;
 	
-	@GetMapping()
-	public String getAddress() {
-		return "Woodside, NY 11377";
-	}
-	
 	@GetMapping("/address/{employeeId}")
 	public ResponseEntity<AddressResponse> getAddressByEmployeeId(@PathVariable("employeeId") int employeeId) {
 		AddressResponse addressResponse = addressService.findAddressByEmployeeId(employeeId);
